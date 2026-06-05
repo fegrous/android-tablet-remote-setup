@@ -18,14 +18,14 @@
 ### 方案概览
 
 ```
-服务器 (fegrous.top)
+[你的云服务器]
     ↕ FRP 内网穿透
-平板 (Android 13 Termux)
+平板 (Android 13 + Termux)
     ↕ SSH (端口 8022)
-外部访问 → fegrous.top:2222 → FRPS → FRPC → 平板:8022
+外部访问 → [服务器域名/IP]:[映射端口] → FRPS → FRPC → 平板:8022
 ```
 
-整条链路：你或 AI → 云服务器 2222 端口 → FRP 隧道 → 平板 Termux 的 SSH 服务 → 操作终端。
+整条链路：你或 AI → [云服务器:映射端口] → FRP 隧道 → 平板 Termux 的 SSH 服务 → 操作终端。
 
 关键组件：
 - **Termux** — 安卓上的 Linux 终端模拟器
@@ -97,7 +97,7 @@ chmod 700 ~/.ssh
 
 ```bash
 # 在服务器上执行
-scp -P 2222 u0_a337@fegrous.top:~/.ssh/id_ed25519 ~/.ssh/tablet_ed25519
+scp -P [映射端口] [用户名]@[服务器域名]:~/.ssh/id_ed25519 ~/.ssh/tablet_ed25519
 chmod 600 ~/.ssh/tablet_ed25519
 ```
 
@@ -147,16 +147,16 @@ chmod +x $PREFIX/bin/frpc
 创建配置文件 `~/.frpc.toml`：
 
 ```toml
-serverAddr = "fegrous.top"      # 你的服务器地址
-serverPort = 7000               # FRP 服务端端口
-auth.token = "your_token_here"  # FRP 认证 Token
+serverAddr = "[你的服务器域名/IP]"
+serverPort = [FRP 服务端端口]           # 默认 7000
+auth.token = "[你的 FRP Token]"
 
 [[proxies]]
 name = "android-ssh"
 type = "tcp"
 localIP = "127.0.0.1"
 localPort = 8022                # Termux SSHD 端口
-remotePort = 2222               # 服务器上暴露的端口
+remotePort = [映射端口]          # 服务器上暴露的端口
 ```
 
 > **注意**：`auth.token` 需要和服务器上 `/etc/frps.toml` 的 token 一致。
@@ -179,7 +179,7 @@ frpc -c ~/.frpc.toml
 从服务器（或任意能访问公网的机器）测试：
 
 ```bash
-ssh -p 2222 u0_a337@fegrous.top
+ssh -p [映射端口] [用户名]@[服务器域名]
 ```
 
 如果进了 Termux 的 shell，说明整条链路通了。
@@ -276,9 +276,9 @@ frpc -c ~/.frpc.toml &
 ```bash
 # ~/.ssh/config 添加
 Host android-tablet
-    HostName fegrous.top
-    Port 2222
-    User u0_a337
+    HostName [你的服务器域名/IP]
+    Port [映射端口]
+    User [Termux 用户名]
     IdentityFile ~/.ssh/tablet_ed25519
     ServerAliveInterval 60
     ServerAliveCountMax 3
