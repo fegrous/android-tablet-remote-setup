@@ -1,0 +1,10 @@
+serverAddr = "fegrous.top"
+serverPort = 7000
+auth.token = "mc2026server"
+
+[[proxies]]
+name = "termux-ssh"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 2222
+remotePort = 7001
