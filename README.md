@@ -17,7 +17,7 @@
 
 ### 方案概览
 
-![完整链路图](https://fegrous.top/img/chain_diagram.png)
+![完整链路图](https://fegrous.top/img/chain_diagram.jpg)
 > 完整控制链路：主人通过 QQ 与 AI 交互，AI SSH 直连云服务器，经 FRP 隧道穿透到平板 Termux，最终通过 sysfs 控制硬件。
 
 
