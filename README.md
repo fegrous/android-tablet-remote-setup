@@ -17,13 +17,9 @@
 
 ### 方案概览
 
-```
-[你的云服务器]
-    ↕ FRP 内网穿透
-平板 (Android 13 + Termux)
-    ↕ SSH (端口 8022)
-外部访问 → [服务器域名/IP]:[映射端口] → FRPS → FRPC → 平板:8022
-```
+![完整链路图](https://fegrous.top/img/chain_diagram.png)
+> 完整控制链路：主人通过 QQ 与 AI 交互，AI SSH 直连云服务器，经 FRP 隧道穿透到平板 Termux，最终通过 sysfs 控制硬件。
+
 
 整条链路：你或 AI → [云服务器:映射端口] → FRP 隧道 → 平板 Termux 的 SSH 服务 → 操作终端。
 
